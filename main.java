@@ -7,7 +7,6 @@ import java.util.*;
 
 class Diffy{
     private static String[][] dp;
-    private static List<String> diffString;
 
     private static List<String> readContent(String path) throws Exception{
         String content = new String(Files.readAllBytes(Paths.get(path)));
@@ -63,7 +62,6 @@ class Diffy{
         List<String> content1Array = readContent(args[0]);
         List<String> content2Array = readContent(args[1]);
        
-        diffString = new ArrayList<>();
         String ans = "";
 
         for(int i=0;i<content1Array.size() && i<content2Array.size();i++){
