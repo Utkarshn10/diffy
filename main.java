@@ -8,6 +8,7 @@ import java.util.*;
 class Diffy{
     private static String[][] dp;
 
+    // read the file line by line and store in list as string
     private static List<String> readContent(String path) throws Exception{
         String content = new String(Files.readAllBytes(Paths.get(path)));
         Scanner sc = new Scanner(content);
