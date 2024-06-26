@@ -1,18 +1,24 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.lang.reflect.Array;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
-import java.util.Scanner;
-
-import javax.management.openmbean.ArrayType;
 
 class Diffy{
     private static String[][] dp;
     private static List<String> diffString;
 
-    private static String readContent(String path) throws Exception{
-        return new String(Files.readAllBytes(Paths.get(path)));
+    private static List<String> readContent(String path) throws Exception{
+        String content = new String(Files.readAllBytes(Paths.get(path)));
+        Scanner sc = new Scanner(content);
+        List<String> contentArray = new ArrayList<>();
+        while(sc.hasNextLine()){
+            String line = sc.nextLine();
+            contentArray.add(line);
+        }
+        sc.close();
+        return contentArray;
     }
 
     // move both i and j ptrs if characters match else
@@ -41,10 +47,8 @@ class Diffy{
         int n = content2.length();
 
         dp = new String[m][n];
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
-                dp[i][j] = null;
-            }
+        for (String[] v:dp) {
+            Arrays.fill(v,null);
         }
       
         String result = findLCSHelper(content1,content2,content1.length()-1,content2.length()-1);
@@ -54,22 +58,26 @@ class Diffy{
     }
 
     public static void main(String[] args) throws Exception{
-        // String content1 = readContent(args[1]);
-        // String content2 = readContent(args[2]);
-        String[] content1Array = new String[]
-        {"This is a test which contains:", "this is the lcs"};
-        String[] content2Array = new String[]{"this is the lcs", "we're testing"};
+        List<String> content1Array = readContent(args[0]);
+        List<String> content2Array = readContent(args[1]);
+       
         diffString = new ArrayList<>();
-        boolean[] vis = new boolean[content2Array.length];
-        List<String> ans = new ArrayList<>();
+        boolean[] vis = new boolean[content2Array.size()];
+        // List<String> ans = new ArrayList<>();
+        String ans = "";
 
-        for(int i=0;i<content1Array.length;i++){
+        int last_matched_jindex = 0,j=0;
+        for(int i=0;i<content1Array.size() && i<content2Array.size();i++){
             String[] maxString = new String[1];
             maxString[0] = "";
-            for(int j=0;j<content2Array.length;j++){
-                if(!vis[j]) LCSCompare(content1Array[i],content2Array[j],vis,maxString);
+            LCSCompare(content1Array.get(i),content2Array.get(i),vis,maxString);
+            if(maxString[0].length() == content1Array.get(i).length()){
+               continue;
             }
-            if(maxString[0].length() == content1Array[i].length()) ans.add(maxString[0]);
+            else {
+                ans+="1. "+content1Array.get(i)+"\n";
+                ans+="2. "+content2Array.get(i)+"\n";
+            }
         }
         System.out.println(ans);
     }
