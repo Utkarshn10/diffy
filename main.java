@@ -42,7 +42,8 @@ class Diffy{
         return dp[i][j] = result;
     }
 
-    private static void LCSCompare(String content1,String content2,boolean[] vis,String[] maxString){
+    // memoization with dp array
+    private static void LCSCompare(String content1,String content2,String[] maxString){
         int m = content1.length();
         int n = content2.length();
 
@@ -57,20 +58,18 @@ class Diffy{
         }
     }
 
+    // read the files and compare them line by line 
     public static void main(String[] args) throws Exception{
         List<String> content1Array = readContent(args[0]);
         List<String> content2Array = readContent(args[1]);
        
         diffString = new ArrayList<>();
-        boolean[] vis = new boolean[content2Array.size()];
-        // List<String> ans = new ArrayList<>();
         String ans = "";
 
-        int last_matched_jindex = 0,j=0;
         for(int i=0;i<content1Array.size() && i<content2Array.size();i++){
             String[] maxString = new String[1];
             maxString[0] = "";
-            LCSCompare(content1Array.get(i),content2Array.get(i),vis,maxString);
+            LCSCompare(content1Array.get(i),content2Array.get(i),maxString);
             if(maxString[0].length() == content1Array.get(i).length()){
                continue;
             }
